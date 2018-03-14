@@ -1,7 +1,15 @@
+require('dotenv').config()
+
 const express = require('express');
 const app = express();
 
+app.set('json spaces', 10);
 
+// Import routes
+var productRoutes = require('./routes/productRoutes');
+
+// Append routes to '/api'
+app.use('/api', productRoutes);
 
 app.get('/api', function (req, res) {
     res.json({
