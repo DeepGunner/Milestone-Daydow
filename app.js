@@ -2,6 +2,33 @@ require('dotenv').config()
 
 const express = require('express');
 const app = express();
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+// Collection for storing cartSessions
+const cartSessionStore = new MongoDBStore({
+    uri: 'mongodb://localhost:27017/ebay',
+    databaseName: 'ebay',
+    collection: 'cartSessions',
+});
+// Catch errors
+cartSessionStore.on('error', function (error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
+// Initialize 
+app.use(session({
+    secret: process.env.CART_SESSION_SECRET,
+    resave: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 1 * 1,
+    },
+    saveUninitialized: true,
+    store: cartSessionStore,
+    unset: 'destroy',
+    name: 'cart.session'
+}));
 
 app.set('json spaces', 10);
 
