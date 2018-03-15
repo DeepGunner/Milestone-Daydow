@@ -22,7 +22,7 @@ app.use(session({
     resave: false,
     cookie: {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 1 * 1,
+        maxAge: 1000 * 60 * 60 * 1 * 1, // 1000 * 60 * 60 * 24 * 7 
     },
     saveUninitialized: true,
     store: cartSessionStore,
